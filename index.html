@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Native Language Bias Detector</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+      background: #f4f4f4;
+    }
+    textarea {
+      width: 400px;
+      height: 100px;
+      padding: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 Native Language Bias Detector</h1>
+  <p>Write a sentence in English:</p>
+
+  <textarea id="input"></textarea><br>
+  <button onclick="detect()">Detect</button>
+
+  <div id="result"></div>
+
+  <br><br>
+  <p style="font-size:12px;">For entertainment purposes only.</p>
+
+<script>
+async function detect() {
+  const text = document.getElementById("input").value;
+
+  document.getElementById("result").innerText = "Analyzing linguistic patterns...";
+
+  const response = await fetch("/api", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text })
+  });
+
+  const data = await response.json();
+  document.getElementById("result").innerText = data.result;
+}
+</script>
+
+</body>
+</html>
