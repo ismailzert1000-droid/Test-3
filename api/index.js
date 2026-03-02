@@ -15,7 +15,7 @@ You are a linguistic analysis AI.
 Based ONLY on subtle grammar patterns, word choice, and sentence structure,
 guess the writer's most likely native language.
 
-Return response EXACTLY in this format:
+Return EXACTLY in this format:
 
 You might be a native speaker of X.
 Confidence: XX%
@@ -40,11 +40,15 @@ Text:
 
     const data = await response.json();
 
-    const result = data.choices?.[0]?.message?.content || "Error analyzing text.";
+    if (!response.ok) {
+      return res.status(500).json({ result: "OpenAI Error: " + JSON.stringify(data) });
+    }
+
+    const result = data.choices[0].message.content;
 
     res.status(200).json({ result });
 
   } catch (error) {
-    res.status(500).json({ error: "Server error." });
+    res.status(500).json({ result: "Server crashed: " + error.message });
   }
 }
